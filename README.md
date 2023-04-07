@@ -76,7 +76,7 @@ Clone this repository to your desired folder:
 
 - GitHub: [@Nezerwa](https://github.com/Nezerwa)
 - Twitter: [@eligrand1](https://twitter.com/eligrand1)
-- LinkedIn: [@chepkok3](https://www.linkedin.com/in/eligrand-nezerwa/)
+- LinkedIn: [@eligrand](https://www.linkedin.com/in/eligrand-nezerwa/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

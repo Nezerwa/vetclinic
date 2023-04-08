@@ -1,68 +1,79 @@
-INSERT INTO animals (name, date_of_birth, escape_attempts, neutered, weight_kg) VALUES
-('Agumon', '2020-02-03', 0, TRUE, 10.23),
-('Gabumon', '2018-11-15', 2, TRUE, 8),
-('Pikachu', '2021-01-07', 1, FALSE, 15.04),
-('Devimon', '2017-05-12', 5, TRUE, 11),
-('Charmander','2020-02-08',0, False, -11),
-('Plantmon', '2021-11-15', 2, TRUE, -5.7),
-('Squirtle', '1993-04-02', 3, False, -12.13),
-('Angemon', '2005-06-12', 1, TRUE, -45),
-('Boarmon', '2005-06-07', 7, TRUE, 20.4),
-('Blossom','1998-10-13',3,true,17),
-('Ditto','2022-05-14',4,true,22);
+/* Populate database with sample data. */
 
-INSERT INTO owners(full_name,age) VALUES 
+INSERT INTO animals(name, date_of_birth, weight_kg, neutered, escape_attempts)
+VALUES
+('Agumon', 'Feb 3, 2020', 10.23,'true', 0 ),
+('Gabumon', 'Nov 15, 2018', 8, 'true', 2),
+('Pikachu', 'Jan 7, 2021', 15.04, 'false', 1),
+('Devimon', 'May 12, 2017', 11, 'true', 5);
+
+INSERT INTO animals(name, date_of_birth, weight_kg, neutered, escape_attempts)
+VALUES
+('Charmander', 'Feb 8, 2020', -11,'false', 0 ),
+('Plantmon', 'Nov 15, 2021', -5.7,'true', 2 ),
+('Squirtle', 'Apr 2, 1993', -12.13, 'false', 3 ),
+('Angemon',  'Jun 12, 2005', -45,  'true', 1),
+('Boarmon', 'Jun 7, 2005', 20.4, 'true', 7),
+('Blossom', 'Oct 13, 1998', 17, 'true', 3),
+('Ditto', 'May 14, 2022', 22, 'true', 4);
+
+INSERT INTO owners(full_name, age)
+VALUES
 ('Sam Smith', 34),
 ('Jennifer Orwell', 19),
 ('Bob', 45),
 ('Melody Pond', 77),
 ('Dean Winchester', 14),
 ('Jodie Whittaker', 38);
-INSERT INTO species(name) VALUES ('Pokemon');
-INSERT INTO species(name) VALUES ('Digimon');
 
---Modify inserted animals so it includes the species_id value
+INSERT INTO species(name)
+VALUES
+('Pokemon'),
+('Digimon');
+
 UPDATE animals SET species_id = 2 WHERE name LIKE '%mon';
-UPDATE animals SET species_id = 1 WHERE name NOT LIKE '%mon';
+UPDATE animals SET species_id = 1 WHERE species_id IS NULL;
 
---Modify inserted animals to include owner information
 UPDATE animals SET owner_id = 1 WHERE name = 'Agumon';
-UPDATE animals SET owner_id = 2 WHERE name IN ('Gabumon', 'Pikachu');
-UPDATE animals SET owner_id = 3 WHERE name IN ('Devimon', 'Plantmon');
-UPDATE animals SET owner_id = 4 WHERE name IN ('Charmander', 'Squirtle', 'Blossom');
-UPDATE animals SET owner_id = 5 WHERE name IN ('Angemon', 'Boarmon');
+UPDATE animals SET owner_id = 2 WHERE name = 'Gabumon' OR name = 'Pikachu';
+UPDATE animals SET owner_id = 3 WHERE name = 'Devimon' OR name = 'Plantmon';
+UPDATE animals SET owner_id = 4 WHERE name = 'Charmander' OR name = 'Squirtle' OR name = 'Blossom';
+UPDATE animals SET owner_id = 5 WHERE name = 'Angemon' OR name = 'Boarmon';
 
-/*join data for visits*/
-INSERT INTO vets (name,age,date_of_graduation) VALUES ('William Tatcher',45,'2000-04-23');
-INSERT INTO vets (name,age,date_of_graduation) VALUES ('Maisy Smith',26,'2019-01-17');
-INSERT INTO vets (name,age,date_of_graduation) VALUES ('Stephanie Mendez',64,'1981-05-04');
-INSERT INTO vets (name,age,date_of_graduation) VALUES ('Jack Harkness',38,'2007-06-08');
 
--- Insert data into the specializations table
-INSERT INTO specializations (vet_id, species_id) VALUES ((select id FROM vets WHERE name = 'William Tatcher' LIMIT 1), (SELECT id FROM species WHERE name = 'Pokemon' LIMIT 1));
-INSERT INTO specializations (vet_id, species_id) VALUES ((select id FROM vets WHERE name = 'Stephanie Mendez' LIMIT 1), (SELECT id FROM species WHERE name = 'Pokemon' LIMIT 1)), ((SELECT id FROM vets WHERE name = 'Stephanie Mendez' LIMIT 1), (SELECT id FROM species WHERE name = 'Digimon' LIMIT 1));
-INSERT INTO specializations (vet_id, species_id) VALUES ((select id FROM vets WHERE name = 'Jack Harkness' LIMIT 1), (SELECT id FROM species WHERE name = 'Digimon' LIMIT 1));
+INSERT INTO vets(name, age, date_of_graduation)
+VALUES
+('William Tatcher', 45, 'Apr 23, 2000'),
+('Maisy Smith', 26, 'Jan 17, 2019'),
+('Stephanie Mendez', 64, 'May 4, 1981'),
+('Jack Harkness', 38, 'Jun 8, 2008');
 
--- insert data for visits
-INSERT INTO visits (animals_id, vet_id,  visit_date)
-VALUES 
-((SELECT id FROM animals WHERE name = 'Agumon' LIMIT 1), (SELECT id FROM vets WHERE name = 'William Tatcher' LIMIT 1), '2020-05-24'),
-((SELECT id FROM animals WHERE name = 'Agumon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Stephanie Mendez' LIMIT 1), '2020-07-22'),
-((SELECT id FROM animals WHERE name = 'Gabumon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Jack Harkness' LIMIT 1), '2021-02-02'),
-((SELECT id FROM animals WHERE name = 'Pikachu' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2020-01-05'),
-((SELECT id FROM animals WHERE name = 'Pikachu' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2020-03-08'),
-((SELECT id FROM animals WHERE name = 'Pikachu' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2020-05-14'),
-((SELECT id FROM animals WHERE name = 'Devimon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Stephanie Mendez' LIMIT 1), '2021-05-04'),
-((SELECT id FROM animals WHERE name = 'Charmander' LIMIT 1), (SELECT id FROM vets WHERE name = 'Jack Harkness' LIMIT 1), '2021-02-24'),
-((SELECT id FROM animals WHERE name = 'Plantmon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2019-12-21'),
-((SELECT id FROM animals WHERE name = 'Plantmon' LIMIT 1), (SELECT id FROM vets WHERE name = 'William Tatcher' LIMIT 1), '2020-08-10'),
-((SELECT id FROM animals WHERE name = 'Plantmon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2021-04-07'),
-((SELECT id FROM animals WHERE name = 'Squirtle' LIMIT 1), (SELECT id FROM vets WHERE name = 'Stephanie Mendez' LIMIT 1), '2021-09-29'),
-((SELECT id FROM animals WHERE name = 'Angemon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Jack Harkness' LIMIT 1), '2020-10-03'),
-((SELECT id FROM animals WHERE name = 'Angemon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Jack Harkness' LIMIT 1), '2020-11-04'),
-((SELECT id FROM animals WHERE name = 'Boarmon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2019-01-24'),
-((SELECT id FROM animals WHERE name = 'Boarmon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2019-05-15'),
-((SELECT id FROM animals WHERE name = 'Boarmon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2020-02-27'),
-((SELECT id FROM animals WHERE name = 'Boarmon' LIMIT 1), (SELECT id FROM vets WHERE name = 'Maisy Smith' LIMIT 1), '2020-08-03'),
-((SELECT id FROM animals WHERE name = 'Blossom' LIMIT 1), (SELECT id FROM vets WHERE name = 'Stephanie Mendez' LIMIT 1), '2020-05-24'),
-((SELECT id FROM animals WHERE name = 'Blossom' LIMIT 1), (SELECT id FROM vets WHERE name = 'William Tatcher' LIMIT 1), '2021-01-11');
+INSERT INTO specializations(species_id, vet_id)
+VALUES
+(1, 1),
+(1, 3),
+(2, 3),
+(2, 4);
+
+INSERT INTO visits(animal_id, vet_id, date_of_visit)
+VALUES
+(1, 1, 'May 24, 2020'),
+(1, 3, 'Jul 22, 2020'),
+(2, 4, 'Feb 2, 2021'),
+(3, 2, 'Jan 5, 2020'),
+(3, 2, 'Mar 8, 2020'),
+(3, 2, 'May 14, 2020'),
+(4, 3, 'May 4, 2021'),
+(5, 4, 'Feb 24, 2021'),
+(6, 2, 'Dec 21, 2019'),
+(6, 1, 'Aug 10, 2020'),
+(6, 2, 'Apr 7, 2021'),
+(7, 3, 'Sep 29, 2019'),
+(8, 4, 'Oct 3, 2020'),
+(8, 4, 'Nov 4, 2020'),
+(9, 2, 'Jan 24, 2019'),
+(9, 2, 'May 15, 2019'),
+(9, 2, 'Feb 27, 2020'),
+(9, 2, 'Aug 3, 2020'),
+(10, 3, 'May 24, 2020'),
+(10, 1, 'Jan 11, 2021');
